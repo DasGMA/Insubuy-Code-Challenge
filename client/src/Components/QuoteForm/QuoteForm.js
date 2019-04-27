@@ -3,6 +3,7 @@ import Input from './Input';
 import Select from './Select';
 import Button from '../Button/Button';
 import './index.css';
+import Axios from 'axios';
 
 const url = 'http://localhost:8080/quotes/'
 
@@ -29,7 +30,24 @@ class QuoteForm extends Component {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
-        
+        const newTraveler = {
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            citizenship: this.state.citizenship,
+            policyMax: this.state.policyMax,
+            age: this.state.age,
+            mailingState: this.state.mailingState,
+        }
+        Axios.post(url, newTraveler)
+            .then(res => {
+                console.log(res);
+                console.log(res.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+
+            this.setState(this.baseState)
     }
 
     handleClearForm = (event) => {
@@ -104,6 +122,7 @@ class QuoteForm extends Component {
                 <div className = 'buttons-container'>
                     <Button 
                         title = 'GET QUOTES'
+                        onClick = {this.handleFormSubmit}
                     />
                     <Button 
                         title = 'Reset From'
