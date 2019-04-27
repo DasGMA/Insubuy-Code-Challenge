@@ -10,12 +10,12 @@ const Select = (props) => {
                 onChange = {props.onChange}
             >
             <option defaultValue = ''>{props.placeholder}</option>
-            {props.options.map(policyOption => {
+            {props.options.map(option => {
                 return (
                     <option
-                        key = {policyOption}
-                        value = {policyOption}
-                        label = {policyOption}>{policyOption}
+                        key = {option}
+                        value = {option}
+                        label = {option}>{option}
                     </option>
                 );
             })}
