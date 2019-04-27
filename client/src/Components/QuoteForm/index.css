@@ -7,6 +7,8 @@
     max-width: 770px;
     width: 100%;
     margin: 125px auto 0 auto;
+    padding: 5px;
+    border: 1px solid lightgray;
     
 }
 
@@ -17,6 +19,7 @@
 
 .form-dates-container {
     display: flex;
+    flex-direction: row;
 }
 
 .policy-age-container {
@@ -26,12 +29,52 @@
 
 .dates-citizenship-container {
     display: flex;
+    justify-content: space-between;
+}
 
+.dates-label {
+    display: flex;
+}
+
+#startDate, #endDate {
+    width: 186px;
 }
 
 label {
     text-align: left;
     font-weight: 700;
     font-size: 0.8rem;
+    margin-bottom: 3px;
 }
 
+input {
+    width: 380px;
+    height: 30px;
+    border: 1px solid lightgrey; 
+}
+
+select {
+    width: 380px;
+    height: 30px;
+}
+
+input::-webkit-datetime-edit{ color: transparent; }
+input:focus::-webkit-datetime-edit{ color: #000; }
+input:valid::-webkit-datetime-edit{ color: #000; }
+
+input[type="date"]::before {
+	color: #999999;
+    content: attr(placeholder);
+    padding-left: 10px;
+}
+input[type="date"] {
+	color: #000;
+}
+input[type="date"]:focus,
+input[type="date"]:valid {
+	color: #666666;
+}
+input[type="date"]:focus::before,
+input[type="date"]:valid::before {
+	content: "" !important;
+}

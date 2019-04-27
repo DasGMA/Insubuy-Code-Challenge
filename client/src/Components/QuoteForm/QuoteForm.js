@@ -4,6 +4,8 @@ import Select from './Select';
 import Button from '../Button/Button';
 import './index.css';
 
+const url = 'http://localhost:8080/quotes/'
+
 class QuoteForm extends Component {
     constructor(props){
         super(props)
@@ -27,11 +29,11 @@ class QuoteForm extends Component {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
+        
     }
 
     handleClearForm = (event) => {
         event.preventDefault();
-        console.log('Clearing', this.baseState)
         this.setState (this.baseState)
     }
 
@@ -58,22 +60,25 @@ class QuoteForm extends Component {
                 </div>
 
                 <div className = 'dates-citizenship-container'>
-                    <div className = 'form-dates-container'>
-                        <Input 
-                            name = 'startDate'
-                            type = 'date'
-                            placeholder = 'Start Date'
-                            onChange = {this.handleChange}
-                            value = {this.state.startDate}
-                            title = 'Travel Dates (mm/dd/yyyy)'
-                        /> {/* Start date */}
-                        <Input 
-                            name = 'endDate'
-                            type = 'date'
-                            placeholder = 'End Date'
-                            onChange = {this.handleChange}
-                            value = {this.state.endDate}
-                        /> {/* End date */}
+
+                    <div>
+                        <label className = 'dates-label'>Travel Dates (mm/dd/yyyy)</label>
+                        <div className = 'form-dates-container'>
+                            <Input 
+                                name = 'startDate'
+                                type = 'date'
+                                placeholder = 'Start Date'
+                                onChange = {this.handleChange}
+                                value = {this.state.startDate}
+                            /> {/* Start date */}
+                            <Input 
+                                name = 'endDate'
+                                type = 'date'
+                                placeholder = 'End Date'
+                                onChange = {this.handleChange}
+                                value = {this.state.endDate}
+                            /> {/* End date */}
+                        </div>
                     </div>
                     <Input 
                         id = 'citizenship'
