@@ -12,6 +12,17 @@
     display: flex;
     border: 1px solid red;
     padding: 10px 50px;
+    justify-content: space-between;
 
 }
 
+.filters-results-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.filters {
+    border: 1px solid red;
+    width: 100%;
+    max-width: 20%;
+}

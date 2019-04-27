@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Axios from 'axios';
 import Quote from './Quote';
 import ResultsHeader from './ResultsHeader';
+import Filters from './Filters';
 
 const url = 'http://localhost:8080/quotes/';
 
@@ -10,6 +11,7 @@ class ResultsPage extends Component {
         super(props)
             this.state = {
                 quotes: [],
+                originalQuotes: []
             }
     }
 
@@ -20,9 +22,10 @@ class ResultsPage extends Component {
     getQuotes = () => {
         Axios.get(url)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
                 this.setState({
-                    quotes: res.data.quotes
+                    quotes: res.data.quotes,
+                    originalQuotes: res.data.quotes
                 })
             })
             .catch(error => {
@@ -75,41 +78,55 @@ class ResultsPage extends Component {
         }
     }
 
-    render() {
+    bestSeller = () => {
+        let quotes = this.state.quotes;
+        let filterBestSellers = quotes.filter(quote => quote.bestSellers);
+        this.setState({
+            quotes: filterBestSellers
+        })
+    }
 
+    clearFilters = () => {
+        console.log('Restore')
+        this.setState({
+            quotes: this.state.originalQuotes
+        })
+    }
+
+    render() {
+        const options = ['Name Sort (A - Z)', 'Name Sort (Z - A)', 'Price Sort (low > high)','Price Sort (high > low)'];
         return (
-            <div>
-                <div>
+            <div className = 'results-container'>
                 <ResultsHeader 
                     numberOfPlans = {this.state.quotes.length}
+                    name = 'sorting'
+                    onChange = {this.sorting}
+                    options = {options}
+                    placeholder = 'Sort By'
                 />
-                <label>Sort by: </label>
-                <select onChange={this.sorting}>
-                    <option value='blank'></option>
-                    <option value='Name Sort (A - Z)'>Name Sort (A - Z)</option>
-                    <option value='Name Sort (Z - A)'>Name Sort (Z - A)</option>
-                    <option value='Price Sort (low > high)'>Price Sort (low > high)</option>
-                    <option value='Price Sort (high > low)'>Price Sort (high > low)</option>
-                </select>
-                </div>
-                
-            
-                    {this.state.quotes.map(quote => {
-                        return(
-                            <Quote
-                                key = {quote.id + quote.name}
-                                name = {quote.name}
-                                description = {quote.description}
-                                price = {quote.price}
-                                type = {quote.type}
-                                section = {quote.section}
-                                n = {quote.name}
-                                t = 'checkbox'
-                                title = 'Compare'
-                            />
-                        )
-                    })}
-            
+                <div className = 'filters-results-container'>
+                    <Filters
+                        onClick = {this.bestSeller}
+                        clearFilters = {this.clearFilters}
+                     />
+                    <div>
+                        {this.state.quotes.map(quote => {
+                            return(
+                                <Quote
+                                    key = {quote.id + quote.name}
+                                    name = {quote.name}
+                                    description = {quote.description}
+                                    price = {quote.price}
+                                    type = {quote.type}
+                                    section = {quote.section}
+                                    n = {quote.name}
+                                    t = 'checkbox'
+                                    title = 'Compare'
+                                />
+                            )
+                        })}
+                        </div>
+                </div>    
             </div>
         )
     }

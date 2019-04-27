@@ -16,8 +16,7 @@ class QuoteForm extends Component {
                 citizenship: '',
                 policyMax: '',
                 age: '',
-                mailingState: '',
-                policyMaxOptions: [50000, 100000, 250000, 500000],
+                mailingState: ''
             }
             this.baseState = this.state;
     }
@@ -40,11 +39,13 @@ class QuoteForm extends Component {
         }
         Axios.post(url, newTraveler)
             .then(res => {
-                console.log(res);
-                console.log(res.data)
+                if (res.data.success) {
+                    window.location = '/results';
+                }
             })
             .catch(error => {
                 console.log(error)
+                alert(`There was an error entering information. All fields are required. Try again.`);
             })
 
             this.setState(this.baseState)
@@ -56,11 +57,12 @@ class QuoteForm extends Component {
     }
 
     render() {
+        const policyMaxOptions = [50.000, 100.000, 250.000, 500.000];
         return (
             <form className = 'container' onSubmit = { this.handleFormSubmit }>
                 <div className = 'policy-age-container'>
                     <Select 
-                        options = {this.state.policyMaxOptions}
+                        options = {policyMaxOptions}
                         placeholder = 'Choose your policy maximum'
                         name = 'policyMax'
                         title = 'Policy Maximum'
@@ -129,8 +131,6 @@ class QuoteForm extends Component {
                         onClick = {this.handleClearForm}
                     />
                 </div>
-                
-                
             </form>
         )
     }
