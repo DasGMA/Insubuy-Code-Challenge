@@ -10,7 +10,6 @@ class ResultsPage extends Component {
         super(props)
             this.state = {
                 quotes: [],
-                options: ['Price Sort','Name Sort'],
                 selection: '',
             }
     }
@@ -34,38 +33,46 @@ class ResultsPage extends Component {
         })
     }
 
-    nameSort = () => {
-        let arr = [];
-        let sorted = this.state.quotes.sort((a, b) => a.name.localeCompare(b.name));
-        arr.concat(sorted);
-        this.setState({
-            quotes: arr
-        })
-    }
 
-    priceSort = () => {
+    sorting = (event) => {
         let arr = [];
-        let sorted = this.state.quotes.sort((a, b) => a.price - b.price);
-        arr.concat(sorted);
-        this.setState({
-            quotes: arr
-        })
+
+        switch(event.target.value) {
+            
+            case 'Name Sort':
+            arr = this.state.quotes.sort((a, b) => a.name.localeCompare(b.name));
+            this.setState({
+                quotes: arr
+            });
+            break;
+
+            case 'Price Sort':
+            arr = this.state.quotes.sort((a, b) => a.price - b.price);
+            this.setState({
+                quotes: arr
+            });
+            break;
+
+            default:
+            break;
+        }
     }
 
     render() {
 
         return (
             <div>
+                <div>
                 <ResultsHeader 
                     numberOfPlans = {this.state.quotes.length}
-                    name = 'selection'
-                    title = 'Sort By'
-                    options = {this.state.options}
-                    label = ''
-                    value = {this.state.selection}
-                    onChange = {this.handleChange}
-                     
                 />
+                <select onChange={this.sorting}>
+                    <option value='blank'></option>
+                    <option value='Name Sort'>Name Sort</option>
+                    <option value='Price Sort'>Price Sort</option>
+                </select>
+                </div>
+                
             
                     {this.state.quotes.map(quote => {
                         return(
