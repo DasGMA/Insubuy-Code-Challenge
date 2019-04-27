@@ -9,7 +9,7 @@ const Select = (props) => {
                 value = {props.value}
                 onChange = {props.onChange}
             >
-            <option defaultValue = ''>{props.placeholder}</option>
+            <option value = ''>{props.placeholder}</option>
             {props.options.map(option => {
                 return (
                     <option

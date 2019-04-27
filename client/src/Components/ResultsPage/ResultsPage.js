@@ -10,11 +10,14 @@ class ResultsPage extends Component {
         super(props)
             this.state = {
                 quotes: [],
-                selection: '',
             }
     }
 
     componentDidMount() {
+        this.getQuotes();
+    }
+
+    getQuotes = () => {
         Axios.get(url)
             .then(res => {
                 console.log(res)
@@ -39,15 +42,29 @@ class ResultsPage extends Component {
 
         switch(event.target.value) {
             
-            case 'Name Sort':
+            case 'Name Sort (A - Z)':
             arr = this.state.quotes.sort((a, b) => a.name.localeCompare(b.name));
             this.setState({
                 quotes: arr
             });
             break;
 
-            case 'Price Sort':
+            case 'Name Sort (Z - A)':
+            arr = this.state.quotes.sort((a, b) => b.name.localeCompare(a.name));
+            this.setState({
+                quotes: arr
+            });
+            break;
+
+            case 'Price Sort (low > high)':
             arr = this.state.quotes.sort((a, b) => a.price - b.price);
+            this.setState({
+                quotes: arr
+            });
+            break;
+
+            case 'Price Sort (high > low)':
+            arr = this.state.quotes.sort((a, b) => b.price - a.price);
             this.setState({
                 quotes: arr
             });
@@ -66,10 +83,13 @@ class ResultsPage extends Component {
                 <ResultsHeader 
                     numberOfPlans = {this.state.quotes.length}
                 />
+                <label>Sort by: </label>
                 <select onChange={this.sorting}>
                     <option value='blank'></option>
-                    <option value='Name Sort'>Name Sort</option>
-                    <option value='Price Sort'>Price Sort</option>
+                    <option value='Name Sort (A - Z)'>Name Sort (A - Z)</option>
+                    <option value='Name Sort (Z - A)'>Name Sort (Z - A)</option>
+                    <option value='Price Sort (low > high)'>Price Sort (low > high)</option>
+                    <option value='Price Sort (high > low)'>Price Sort (high > low)</option>
                 </select>
                 </div>
                 
