@@ -29,6 +29,7 @@ class QuoteForm extends Component {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
+        this.validateAge();
         const newTraveler = {
             startDate: this.state.startDate,
             endDate: this.state.endDate,
@@ -64,6 +65,7 @@ class QuoteForm extends Component {
     }
 
     render() {
+        console.log(parseInt(this.state.age))
         const policyMaxOptions = [50.000, 100.000, 250.000, 500.000];
         return (
             <form className = 'container' onSubmit = { this.handleFormSubmit }>
