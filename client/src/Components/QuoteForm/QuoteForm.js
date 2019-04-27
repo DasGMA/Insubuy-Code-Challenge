@@ -56,6 +56,13 @@ class QuoteForm extends Component {
         this.setState (this.baseState)
     }
 
+    validateText = (event) => {
+        const reg = /[a-zA-Z]+/g;
+        if (!reg.test(event.key)) {
+            event.preventDefault()
+        }
+    }
+
     render() {
         const policyMaxOptions = [50.000, 100.000, 250.000, 500.000];
         return (
@@ -108,6 +115,7 @@ class QuoteForm extends Component {
                         title = 'Citizenship'
                         onChange = {this.handleChange}
                         value = {this.state.citizenship}
+                        onKeyPress = {this.validateText}
                     /> {/* Citizenship text box */}
                 </div>
 
@@ -119,6 +127,7 @@ class QuoteForm extends Component {
                     title = 'Mailing State'
                     onChange = {this.handleChange}
                     value = {this.state.mailingState}
+                    onKeyPress = {this.validateText}
                 /> {/* Mailing state text box */}
 
                 <div className = 'buttons-container'>
