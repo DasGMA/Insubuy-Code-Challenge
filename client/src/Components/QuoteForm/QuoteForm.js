@@ -5,7 +5,8 @@ import Button from '../Button/Button';
 import './index.css';
 import Axios from 'axios';
 
-const url = 'http://localhost:8080/quotes/'
+const url = 'http://localhost:8080/quotes/';
+const policyMaxOptions = [50.000, 100.000, 250.000, 500.000];
 
 class QuoteForm extends Component {
     constructor(props){
@@ -29,7 +30,6 @@ class QuoteForm extends Component {
 
     handleFormSubmit = (event) => {
         event.preventDefault();
-        this.validateAge();
         const newTraveler = {
             startDate: this.state.startDate,
             endDate: this.state.endDate,
@@ -49,24 +49,34 @@ class QuoteForm extends Component {
                 alert(`There was an error entering information. All fields are required. Try again.`);
             })
 
-            this.setState(this.baseState)
+            this.setState(this.baseState);
     }
 
     handleClearForm = (event) => {
         event.preventDefault();
-        this.setState (this.baseState)
+        this.setState (this.baseState);
     }
 
     validateText = (event) => {
         const reg = /[a-zA-Z]+/g;
         if (!reg.test(event.key)) {
-            event.preventDefault()
+            event.preventDefault();
         }
     }
 
+    validateAge = () => {
+        let age = this.state.age;
+        if (age > 100){
+            alert('Can not be older than 100 years old.')
+        }
+    }
+
+    validateForm = () => {
+        this.validateAge();
+        this.validateText();
+    }
+
     render() {
-        console.log(parseInt(this.state.age))
-        const policyMaxOptions = [50.000, 100.000, 250.000, 500.000];
         return (
             <form className = 'container' onSubmit = { this.handleFormSubmit }>
                 <div className = 'policy-age-container'>
@@ -85,13 +95,15 @@ class QuoteForm extends Component {
                         placeholder = 'Choose your age'
                         onChange = {this.handleChange}
                         value = {this.state.age}
+                        onKeyPress = {this.validateAge}
+                        errorMessage = {this.state.age > 100 ? 'You cant be older than 100.' : null}
                     /> {/* Age/Year text box*/}
                 </div>
 
                 <div className = 'dates-citizenship-container'>
 
                     <div>
-                        <label className = 'dates-label'>Travel Dates (mm/dd/yyyy)</label>
+                        <label htmlFor = 'form-dates-container' className = 'dates-label'>Travel Dates (mm/dd/yyyy)</label>
                         <div className = 'form-dates-container'>
                             <Input 
                                 name = 'startDate'
@@ -99,6 +111,7 @@ class QuoteForm extends Component {
                                 placeholder = 'Start Date'
                                 onChange = {this.handleChange}
                                 value = {this.state.startDate}
+                                errorMessage = {this.state.startDate > this.state.endDate ? 'Start date can\'t be before end date' : null}
                             /> {/* Start date */}
                             <Input 
                                 name = 'endDate'
@@ -106,6 +119,7 @@ class QuoteForm extends Component {
                                 placeholder = 'End Date'
                                 onChange = {this.handleChange}
                                 value = {this.state.endDate}
+                                errorMessage = {this.state.endDate < this.state.startDate ? 'End date can\'t be before start date' : null}
                             /> {/* End date */}
                         </div>
                     </div>
@@ -117,7 +131,7 @@ class QuoteForm extends Component {
                         title = 'Citizenship'
                         onChange = {this.handleChange}
                         value = {this.state.citizenship}
-                        onKeyPress = {this.validateText}
+                        errorMessage = {this.state.citizenship.match(/[a-zA-Z]+/g) ? null : 'Must be only letters. No special characters or numbers.'}
                     /> {/* Citizenship text box */}
                 </div>
 
@@ -129,7 +143,7 @@ class QuoteForm extends Component {
                     title = 'Mailing State'
                     onChange = {this.handleChange}
                     value = {this.state.mailingState}
-                    onKeyPress = {this.validateText}
+                    errorMessage = {this.state.mailingState.match(/[a-zA-Z]+/g) ? null : 'Must be only letters. No special characters or numbers.'}
                 /> {/* Mailing state text box */}
 
                 <div className = 'buttons-container'>

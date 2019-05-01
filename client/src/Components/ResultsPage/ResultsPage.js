@@ -5,13 +5,15 @@ import ResultsHeader from './ResultsHeader';
 import Filters from './Filters';
 
 const url = 'http://localhost:8080/quotes/';
+const options = ['Name Sort (A - Z)', 'Name Sort (Z - A)', 'Price Sort (Low > High)','Price Sort (High > Low)'];
 
 class ResultsPage extends Component {
     constructor(props){
         super(props)
             this.state = {
                 quotes: [],
-                originalQuotes: []
+                originalQuotes: [],
+                policyMaxOptions: [],
             }
     }
 
@@ -22,10 +24,19 @@ class ResultsPage extends Component {
     getQuotes = () => {
         Axios.get(url)
             .then(res => {
-                console.log(res.data)
+                const policyMax = new Set();
+                const pm = res.data.quotes.map(quote => {
+                    return quote.price;
+                })
+                
+                for (let i = 0; i < pm.length; i++) {
+                    policyMax.add(pm[i]);
+                }
+                
                 this.setState({
                     quotes: res.data.quotes,
-                    originalQuotes: res.data.quotes
+                    originalQuotes: res.data.quotes,
+                    policyMaxOptions: [...policyMax]
                 })
             })
             .catch(error => {
@@ -59,14 +70,14 @@ class ResultsPage extends Component {
             });
             break;
 
-            case 'Price Sort (low > high)':
+            case 'Price Sort (Low > High)':
             arr = this.state.quotes.sort((a, b) => a.price - b.price);
             this.setState({
                 quotes: arr
             });
             break;
 
-            case 'Price Sort (high > low)':
+            case 'Price Sort (High > Low)':
             arr = this.state.quotes.sort((a, b) => b.price - a.price);
             this.setState({
                 quotes: arr
@@ -78,7 +89,7 @@ class ResultsPage extends Component {
         }
     }
 
-    bestSeller = () => {
+    filterBestSeller = () => {
         let quotes = this.state.quotes;
         let filterBestSellers = quotes.filter(quote => quote.bestSellers);
         this.setState({
@@ -86,15 +97,25 @@ class ResultsPage extends Component {
         })
     }
 
+    filterPolicyMax = (value) => {
+        console.log('Filtering Policy Max.');
+        let quotes = this.state.quotes;        
+        let filteredPolicyMaxOptions = quotes.filter(quote => quote.price === value);
+        console.log(filteredPolicyMaxOptions)
+       this.setState({
+            quotes: filteredPolicyMaxOptions,
+        });
+    }
+
+
+
     clearFilters = () => {
-        console.log('Restore')
         this.setState({
             quotes: this.state.originalQuotes
         })
     }
 
     render() {
-        const options = ['Name Sort (A - Z)', 'Name Sort (Z - A)', 'Price Sort (low > high)','Price Sort (high > low)'];
         return (
             <div className = 'results-container'>
                 <ResultsHeader 
@@ -106,8 +127,11 @@ class ResultsPage extends Component {
                 />
                 <div className = 'filters-results-container'>
                     <Filters
-                        onClick = {this.bestSeller}
+                        options = {this.state.policyMaxOptions}
+                        filterPolicyMax = {this.filterPolicyMax}
+                        filterBest = {this.filterBestSeller}
                         clearFilters = {this.clearFilters}
+                        
                      />
                     <div>
                         {this.state.quotes.map(quote => {

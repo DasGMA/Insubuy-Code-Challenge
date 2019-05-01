@@ -14,6 +14,7 @@ const Input = (props) => {
                 placeholder = {props.placeholder}
                 onKeyPress = {props.onKeyPress}
             />
+            <span className = 'error-message'>{props.errorMessage}</span>
         </div>
     )
 }

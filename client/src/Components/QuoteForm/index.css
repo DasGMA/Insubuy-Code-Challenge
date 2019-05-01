@@ -50,7 +50,14 @@ label {
 input {
     width: 380px;
     height: 30px;
-    border: 1px solid lightgrey; 
+    border: 1px solid lightgrey;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.7rem;
+    text-align: left;
+    padding: 5px;
 }
 
 select {
